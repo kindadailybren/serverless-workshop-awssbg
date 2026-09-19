@@ -18,7 +18,7 @@ export const apiService = {
    * Helper to perform authenticated fetch requests
    */
   async request(endpoint: string, options: RequestInit = {}): Promise<Response> {
-    const token = authService.getIdToken();
+    const token = authService.getAccessToken();
     if (!token) {
       throw new Error("User is not authenticated");
     }

@@ -163,11 +163,19 @@ export const authService = {
   },
 
   /**
-   * Get valid raw ID Token to send in Authorization header
+   * Get valid raw ID Token
    */
   getIdToken(): string | null {
     const session = this.getSession();
     return session ? session.idToken : null;
+  },
+
+  /**
+   * Get valid raw Access Token to send in Authorization header
+   */
+  getAccessToken(): string | null {
+    const session = this.getSession();
+    return session ? session.accessToken : null;
   },
 
   /**

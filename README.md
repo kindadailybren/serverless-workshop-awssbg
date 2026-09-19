@@ -18,7 +18,7 @@ Users authenticate securely through **Amazon Cognito**, each managing an isolate
 │  (Custom Minimal UI)    │       │   (PK: userId = sub)        │
 └───────────┬─────────────┘       └──────────────▲──────────────┘
             │                                    │
-            │ Bearer ID Token                    │
+            │ Bearer Access Token                │
             ▼                                    │
 ┌─────────────────────────┐       ┌──────────────┴──────────────┐
 │  API Gateway REST API   │──────▶│  Lambdas (User Isolated):   │

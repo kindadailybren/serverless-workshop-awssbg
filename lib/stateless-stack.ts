@@ -14,6 +14,7 @@ import {
   Cors,
   CognitoUserPoolsAuthorizer,
   AuthorizationType,
+  ResponseType,
 } from 'aws-cdk-lib/aws-apigateway';
 import { CfnOutput } from 'aws-cdk-lib';
 import * as path from 'path';
@@ -88,6 +89,25 @@ export class StatelessStack extends cdk.Stack {
       },
     });
 
+    // Return CORS headers on authorizer / API Gateway errors (4XX and 5XX)
+    api.addGatewayResponse('Default4XX', {
+      type: ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+        'Access-Control-Allow-Methods': "'GET,PUT,OPTIONS'",
+      },
+    });
+
+    api.addGatewayResponse('Default5XX', {
+      type: ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+        'Access-Control-Allow-Methods': "'GET,PUT,OPTIONS'",
+      },
+    });
+
     // --- Cognito Authorizer ---
 
     const authorizer = new CognitoUserPoolsAuthorizer(this, 'ProfileAuthorizer', {
@@ -98,6 +118,7 @@ export class StatelessStack extends cdk.Stack {
     const authMethodOptions = {
       authorizer,
       authorizationType: AuthorizationType.COGNITO,
+      authorizationScopes: ['aws.cognito.signin.user.admin'],
     };
 
     // Protected Routes

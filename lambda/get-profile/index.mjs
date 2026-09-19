@@ -30,17 +30,15 @@ export const handler = async (event) => {
       })
     );
 
-    const email = claims.email || "";
-    const fallbackName = claims.name || (email ? email.split("@")[0] : "User");
-
+    const timestamp = new Date().toISOString();
     const profile = result.Item || {
       userId,
-      name: fallbackName,
-      email,
+      name: "",
+      email: "",
       bio: "",
       avatarKey: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: timestamp,
+      updatedAt: timestamp,
     };
 
     return {
