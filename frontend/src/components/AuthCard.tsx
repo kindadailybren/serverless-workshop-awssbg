@@ -193,7 +193,7 @@ export const AuthCard: React.FC<AuthCardProps> = ({ onAuthenticated }) => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Alex Developer"
+                placeholder="John Doe"
                 autoComplete="name"
               />
             </div>
