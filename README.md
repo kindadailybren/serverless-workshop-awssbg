@@ -1,37 +1,10 @@
-# Module V: Infrastructure as Code — Serverless Profile Page
+# Infrastructure as Code — Serverless Profile Page
 
 A complete serverless profile platform built with **AWS CDK**, demonstrating the full IaC software lifecycle.  
 Users authenticate securely through **Amazon Cognito**, each managing an isolated personal profile in **DynamoDB** with direct presigned S3 avatar uploads and dual dedicated **CloudFront** distributions.
 
 ---
 
-## Architecture
-
-```
-                                  ┌─────────────────────────────┐
-                                  │   Amazon Cognito User Pool  │
-                                  └──────────────┬──────────────┘
-                                                 │ (Post-Confirmation trigger)
-                                                 ▼
-┌─────────────────────────┐       ┌─────────────────────────────┐
-│  Browser / React SPA    │──────▶│   DynamoDB ProfileTable     │
-│  (Custom Minimal UI)    │       │   (PK: userId = sub)        │
-└───────────┬─────────────┘       └──────────────▲──────────────┘
-            │                                    │
-            │ Bearer Access Token                │
-            ▼                                    │
-┌─────────────────────────┐       ┌──────────────┴──────────────┐
-│  API Gateway REST API   │──────▶│  Lambdas (User Isolated):   │
-│  (Cognito Authorizer)   │       │  - getProfile               │
-└─────────────────────────┘       │  - updateProfile            │
-                                  │  - getUploadUrl             │
-                                  └──────────────┬──────────────┘
-                                                 │
-                                                 ▼ Presigned PUT URL
-┌─────────────────────────────────┐       ┌─────────────────────────────┐
-│ CloudFront #1 (Frontend SPA)    │       │ CloudFront #2 (Assets CDN)  │
-│ └──▶ S3: FrontendBucket         │       │ └──▶ S3: AssetsBucket (OAC) │
-└─────────────────────────────────┘       └─────────────────────────────┘
 ```
 
 ### CDK Stacks
